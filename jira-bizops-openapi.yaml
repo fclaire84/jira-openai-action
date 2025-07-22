@@ -1,0 +1,93 @@
+openapi: 3.1.0
+info:
+  title: Jira Business Ops Requests API
+  description: Create internal Business Operations requests via Jira Service Management.
+  version: 1.0.0
+
+servers:
+  - url: https://api.atlassian.com/ex/jira/197d9c3d-fe6a-430d-aaa7-143787ed13cb/rest/servicedeskapi
+    description: Jira Cloud Service Desk API
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.atlassian.com/authorize
+          tokenUrl: https://auth.atlassian.com/oauth/token
+          scopes:
+            read:jira-user: Read Jira user information
+            read:jira-service-management-request: Read Jira service desk requests
+            write:jira-service-management-request: Create Jira service desk requests
+
+paths:
+  /request:
+    post:
+      operationId: createBusinessOpsRequest
+      summary: Create a Business Operations Request in Jira
+      description: Submit a new request to the Business Operations team using a predefined Request Type.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - serviceDeskId
+                - requestTypeId
+                - requestFieldValues
+              properties:
+                serviceDeskId:
+                  type: string
+                  enum: ["15"]
+                  default: "15"
+                  description: Fixed to the Business Operations service desk
+                requestTypeId:
+                  type: string
+                  description: Select one of the supported request types
+                  enum:
+                    - "188"   # Analytics
+                    - "1034"  # Deal Desk
+                    - "1067"  # Process Revamp
+                    - "191"   # Tools
+                  x-enum-descriptions:
+                    "188": "Analytics"
+                    "1034": "Deal Desk"
+                    "1067": "Process Revamp"
+                    "191": "Tools"
+                requestFieldValues:
+                  type: object
+                  required:
+                    - summary
+                    - description
+                  properties:
+                    summary:
+                      type: string
+                      description: A short summary of the request
+                    description:
+                      type: string
+                      description: A detailed explanation of what is needed
+                  description: >
+                    Fields required to submit the request. 'summary' and 'description' are always required.
+                    Additional fields may be required depending on the selected requestTypeId.
+      responses:
+        '201':
+          description: Request created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  issueKey:
+                    type: string
+                    description: The Jira issue key (e.g., RO-123)
+                  issueId:
+                    type: string
+                    description: Internal issue ID
+
+security:
+  - OAuth2:
+      - read:jira-user
+      - read:jira-service-management-request
+      - write:jira-service-management-request
