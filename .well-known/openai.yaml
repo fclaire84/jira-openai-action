@@ -6,7 +6,7 @@ info:
 
 api:
   type: openapi
-  url: https://yourdomain.com/jira-bizops-openapi.yaml
+  url:  https://fclaire84.github.io/jira-openai-action/jira-bizops-openapi.yaml
   is_user_authenticated: true
 
 auth:
