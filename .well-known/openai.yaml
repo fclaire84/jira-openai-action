@@ -1,0 +1,18 @@
+openapi: "3.1.0"
+info:
+  title: Jira Business Ops Assistant
+  description: Create internal Business Operations requests in Jira via Service Desk
+  version: "1.0.0"
+
+api:
+  type: openapi
+  url: https://yourdomain.com/jira-bizops-openapi.yaml
+  is_user_authenticated: true
+
+auth:
+  type: oauth
+  client_url: https://auth.atlassian.com/authorize
+  scope: read:jira-user read:jira-service-management-request write:jira-service-management-request
+  authorization_content_type: application/x-www-form-urlencoded
+  verification_tokens:
+    openai: YOUR_OPENAI_VERIFICATION_TOKEN
