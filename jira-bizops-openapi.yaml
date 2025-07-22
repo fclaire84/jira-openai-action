@@ -5,8 +5,8 @@ info:
   version: 1.0.0
 
 servers:
-  - url: https://api.atlassian.com/ex/jira/197d9c3d-fe6a-430d-aaa7-143787ed13cb/rest/servicedeskapi
-    description: Jira Cloud Service Desk API
+  - url: https://parloa.atlassian.net
+    description: Jira Service Management instance
 
 components:
   securitySchemes:
